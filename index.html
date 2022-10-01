@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/5.2/getting-started/introduction/">
+    <title>Covid 19</title>
+
+    <style>
+      .Loading {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(39, 36, 36, 0.8)
+          url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;
+      }
+
+      body.loading .Loading {
+        overflow: hidden;
+      }
+
+      body.loading .Loading {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg text-center px-2 mb-5">
+      <a class="navbar-brand text-center" href="#">Covid 19</a>
+    </nav>
+
+    <div class="container">
+        <div class="row mb-3">
+          <div class="col-sm-12">
+            <div class="card w-100">
+              <div class="card-body">
+                <h5 class="card-title text-center">Data Kasus Covid 19</h5>
+                <ul
+                  style="
+                    list-style-type: circle;
+                    list-style: none;
+                    padding-left: 0;
+                  "
+                >
+                  <li class="negara"></li>
+                  <li class="benua"></li>
+                  <li class="tanggal"></li>
+                </ul>
+                <div class="form-group py-2">
+                  <label for="">Cari Negara</label>
+                  <input
+                    type="text"
+                    name="country"
+                    placeholder="Masukan Nama Negara..."
+                    class="form-control"
+                    id=""
+                  />
+                </div>
+                <button class="btn btn-primary tombol-get">Search</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+
+      <div class="cards-data">
+        <div class="container">
+          <div class="row mb-3">
+            <div class="col-sm-4">
+              <div class="card w-100 bg-secondary text-white">
+                <img
+                  width="150"
+                  class="mx-auto"
+                  src="Masker.png"
+                  alt="Card image cap"
+                />
+                <div class="card-body text-center">
+                  <h4 class="card-title">Total Cases</h4>
+                  <p class="card-text totalKasus"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="card w-100 bg-primary text-white">
+                <img
+                  width="150"
+                  class="mx-auto"
+                  src="Masker.png"
+                  alt="Card image cap"
+                />
+                <div class="card-body text-center">
+                  <h4 class="card-title">New Cases</h4>
+                  <p class="card-text kasusBaru"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="card w-100 bg-info text-white">
+                <img
+                  width="150"
+                  class="mx-auto"
+                  src="Masker.png"
+                  alt="Card image cap"
+                />
+                <div class="card-body text-center">
+                  <h4 class="card-title">Active Cases</h4>
+                  <p class="card-text kasusAktiv"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-sm-4">
+              <div class="card w-100 bg-warning text-white">
+                <img
+                  width="150"
+                  class="mx-auto"
+                  src="Masker.png"
+                  alt="Card image cap"
+                />
+                <div class="card-body text-center">
+                  <h4 class="card-title">Recovered Cases</h4>
+                  <p class="card-text recovereCases"></p>
+                </div>
+              </div>
+            </div>
+          
+
+            <div class="col-sm-4">
+              <div class="card w-150 bg-danger text-white">
+                <img
+                  width="150"
+                  class="mx-auto"
+                  src="corona.png"
+                  alt="Card image cap"
+                />
+                <div class="card-body text-center">
+                  <h4 class="card-title">Total Deaths</h4>
+                  <p class="card-text JumlahMeninggal"></p>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-sm-4">
+              <div class="card w-100 bg-secondary text-white">
+                <img
+                  width="150"
+                  class="mx-auto"
+                  src="Pcr.png"
+                  alt="Card image cap"
+                />
+                <div class="card-body text-center">
+                  <h4 class="card-title">Total Tests</h4>
+                  <p class="card-text TotalTest"></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        
+        </div>
+      </div>
+    </div>
+    <div class="Loading"></div>
+
+    <script src="js/jquery-3.6.0.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        const $body = $('body');
+        const today = new Date().toLocaleDateString('id-ID');
+        $('.tanggal').text(' Tanggal  : ' + today);
+
+        $('.cards-data').hide();
+
+        $('.tombol-get').on('click', function () {
+          const country = $('input[name=country]').val();
+          if (!country) {
+            alert('Harap data diisi!');
+            return false;
+          }
+
+          $body.addClass('loading');
+          getDataFromApi(country);
+        });
+
+        async function getDataFromApi(country) {
+          const opsi= {
+            method: 'GET',
+            headers: {
+              'X-RapidAPI-Key':
+              '',
+              'X-RapidAPI-Host': 'covid-193.p.rapidapi.com',
+            },
+          };
+          const data = await fetch(
+            'https://covid-193.p.rapidapi.com/statistics?country=' + country,
+            opsi
+          );
+
+          const response = await data.json();
+          await $body.removeClass('loading');
+          await setData(response);
+        }
+
+        function setData(data) {
+          if (data.results > 0) {
+            const infoData = data.response[0];
+            $('.negara').text('Negara : ' + infoData.country);
+            $('.benua').text('Benua : ' + infoData.continent);
+            $('.totalKasus').text(infoData.cases.total);
+            $('.kasusBaru').text(infoData.cases.new);
+            $('.kasusAktiv').text(infoData.cases.active);
+            $('.recovereCases').text(infoData.cases.recovered);
+            $('.JumlahMeninggal').text(infoData.deaths.total);
+            $('.TotalTest').text(infoData.tests.total);
+
+            $('.cards-data').show();
+          } else {
+            $('.cards-data').hide();
+            alert('Data tidak ditemukan!!');
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

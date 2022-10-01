@@ -1,0 +1,15 @@
+nav {
+    background-color: aqua;
+}
+
+nav a {
+    text-align: center;
+}
+
+.container .card {
+    background-color: khaki;
+}
+
+body{
+    background: url(bg.jpg);
+}
