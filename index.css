@@ -1,5 +1,7 @@
 nav {
-    background-color: aqua;
+    background-color:rgba(23, 3, 97, 0.788) ;
+    color: #07033a;
+    box-shadow: 0px 0px 10px rgba(84, 99, 104, 0.555);
 }
 
 nav a {
@@ -7,9 +9,22 @@ nav a {
 }
 
 .container .card {
-    background-color: khaki;
+    background-color:rgb(2, 58, 95) ;
+    color: #f0c5ee;
+    box-shadow: 0px 0px 10px rgb(8, 202, 50);
 }
 
 body{
-    background: url(bg.jpg);
+    background: linear-gradient(90deg, rgb(0, 56, 56) 1%, rgba(20, 75, 97, 0.998) 46%, rgb(11, 172, 164) 100%);
+
+
 }
+
+.color {
+
+    background-color: #973692;
+    color: rgb(255, 249, 249);
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px rgba(63, 2, 33, 0.8);
+}
+
